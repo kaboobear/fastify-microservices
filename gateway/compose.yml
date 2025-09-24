@@ -1,0 +1,11 @@
+services:
+  gateway:
+    build:
+      context: .
+    container_name: gateway
+    ports:
+      - "80:80"
+    depends_on:
+      - auth-service
+      - users-service
+      - products-service

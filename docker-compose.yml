@@ -1,0 +1,6 @@
+name: my-microservices
+include:
+  - ./auth-service/compose.yml
+  - ./products-service/compose.yml
+  - ./users-service/compose.yml
+  - ./gateway/compose.yml

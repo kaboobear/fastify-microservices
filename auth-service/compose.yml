@@ -1,0 +1,31 @@
+services:
+  auth-service:
+    build:
+      context: .
+    container_name: auth-service
+    environment:
+      - NODE_ENV=development
+      - PORT=3002
+      - DB_URL=postgres://user:password@auth-postgres:5432/db
+      - JWT_SECRET=my-temp-secret
+      - USERS_SERVICE_BASE=http://users-service:3000
+    depends_on:
+      - auth-postgres
+    volumes:
+      - ./:/app
+      - /app/node_modules
+  auth-postgres:
+    image: postgres:14
+    container_name: auth-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db
+    ports:
+      - "5434:5432"
+    volumes:
+      - auth_pg_data:/var/lib/postgresql/data
+
+volumes:
+  auth_pg_data:

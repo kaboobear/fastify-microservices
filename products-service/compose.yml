@@ -1,0 +1,30 @@
+services:
+  products-service:
+    build:
+      context: .
+    container_name: products-service
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - DB_URL=postgres://user:password@products-postgres:5432/db
+      - JWT_SECRET=my-temp-secret
+      - PORT=3001
+    depends_on:
+      - products-postgres
+  products-postgres:
+    image: postgres:14
+    restart: always
+    container_name: products-postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db
+    ports:
+      - "5432:5432"
+    volumes:
+      - products_pg_data:/var/lib/postgresql/data
+
+volumes:
+  products_pg_data:

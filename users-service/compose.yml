@@ -1,0 +1,30 @@
+services:
+  users-service:
+    build:
+      context: .
+    container_name: users-service
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - DB_URL=postgres://user:password@users-postgres:5432/db
+      - JWT_SECRET=my-temp-secret
+      - PORT=3000
+    depends_on:
+      - users-postgres
+  users-postgres:
+    image: postgres:14
+    restart: always
+    container_name: users-postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db
+    ports:
+      - "5433:5432"
+    volumes:
+      - users_pg_data:/var/lib/postgresql/data
+
+volumes:
+  users_pg_data:
